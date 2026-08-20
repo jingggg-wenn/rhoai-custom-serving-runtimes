@@ -1,0 +1,66 @@
+# Upstream vLLM v0.24.0 ServingRuntime for Gemma 4 12B on OpenShift AI
+# Created: 2026-08-20
+#
+# Key differences from the default RHOAI vLLM runtime:
+#   - Uses upstream vllm/vllm-openai:v0.24.0 (Gemma 4 requires v0.23.0+)
+#   - Command is "vllm serve" instead of "python -m vllm.entrypoints.openai.api_server"
+#     (upstream v0.24.0 image does not have "python" in PATH)
+#   - HOME/USER/LOGNAME env vars set to work around OpenShift arbitrary UID
+#     (torch calls getpass.getuser() which fails without /etc/passwd entry)
+#   - max-model-len and gpu-memory-utilization tuned for a single NVIDIA L4 (24GB)
+#
+# CUDA driver requirement:
+#   vllm/vllm-openai:v0.24.0 requires CUDA 13.0.
+#   Verify with: oc get node <gpu-node> -o jsonpath='{.metadata.labels.nvidia\.com/cuda\.runtime-version\.full}'
+#   If CUDA 12.x, use vllm/vllm-openai:v0.24.0-cu129-ubuntu2404 instead.
+apiVersion: serving.kserve.io/v1alpha1
+kind: ServingRuntime
+metadata:
+  annotations:
+    opendatahub.io/apiProtocol: REST
+    opendatahub.io/recommended-accelerators: '["nvidia.com/gpu"]'
+    opendatahub.io/runtime-version: v0.24.0
+    opendatahub.io/serving-runtime-scope: global
+    opendatahub.io/template-display-name: (Upstream 0.24.0) vLLM NVIDIA GPU ServingRuntime for KServe
+    opendatahub.io/template-name: upstream-vllm-0240-runtime
+    openshift.io/display-name: (Upstream 0.24.0) vLLM NVIDIA GPU ServingRuntime for KServe
+  labels:
+    opendatahub.io/dashboard: "true"
+  name: upstream-vllm-0240-runtime
+spec:
+  annotations:
+    opendatahub.io/kserve-runtime: vllm
+    prometheus.io/path: /metrics
+    prometheus.io/port: "8080"
+  containers:
+  - args:
+    - /mnt/models
+    - --port
+    - "8080"
+    - --served-model-name
+    - '{{.Name}}'
+    - --max-model-len
+    - "4096"
+    - --gpu-memory-utilization
+    - "0.95"
+    command:
+    - vllm
+    - serve
+    env:
+    - name: HF_HOME
+      value: /tmp/hf_home
+    - name: HOME
+      value: /tmp
+    - name: USER
+      value: vllm
+    - name: LOGNAME
+      value: vllm
+    image: vllm/vllm-openai:v0.24.0
+    name: kserve-container
+    ports:
+    - containerPort: 8080
+      protocol: TCP
+  multiModel: false
+  supportedModelFormats:
+  - autoSelect: true
+    name: vLLM
