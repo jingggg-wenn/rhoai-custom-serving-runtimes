@@ -55,7 +55,23 @@ When you attempt to serve a model on a runtime that does not support its archite
 - `NotImplementedError` for missing attention backends or kernels
 - Crashes during model weight loading due to incompatible quantization formats
 
-**The solution**: create a custom `ServingRuntime` resource that uses an upstream (or community) vLLM container image while keeping everything else compatible with the OpenShift AI dashboard and KServe.
+One approach is to create a custom `ServingRuntime` resource that uses an upstream (or community) vLLM container image while keeping everything else compatible with the OpenShift AI dashboard and KServe.
+
+---
+
+## Important: Support Scope and Intended Use
+
+> **Custom serving runtimes are NOT covered by Red Hat support.**
+>
+> While OpenShift AI allows adding custom serving runtimes (for both generative and predictive AI model serving), any customization beyond the preinstalled, Red Hat-certified runtimes falls outside the scope of Red Hat support. If you encounter issues with a custom runtime, Red Hat support will not be able to assist with troubleshooting the runtime itself.
+
+**The purpose of this repository** is to help customers who want to **pilot, test, and evaluate** newly released models that are not yet supported by the bundled RHOAI serving runtimes. It is intended for:
+
+- **Proof-of-concept and demo environments** where you need to showcase the latest models
+- **Development and testing** where teams want to evaluate a new model architecture before it lands in a supported RHOAI release
+- **Bridging the gap** between upstream model releases and the next RHOAI version that bundles support for them
+
+For production workloads, the recommendation is to use the preinstalled, Red Hat-certified vLLM serving runtimes and wait for the model architecture to be included in a future RHOAI release.
 
 ---
 
