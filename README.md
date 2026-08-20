@@ -313,7 +313,7 @@ oc apply -f inferenceservice.yaml -n <your-namespace>
 
 ## Working Example: Gemma 4 12B FP8-Dynamic
 
-The `[runtimes/gemma4-vllm-v0.24.0/servingruntime.yaml](runtimes/gemma4-vllm-v0.24.0/servingruntime.yaml)` file contains a working ServingRuntime for serving Gemma 4 12B FP8-Dynamic on a single NVIDIA L4 GPU.
+The [runtimes/gemma4-vllm-v0.24.0/servingruntime.yaml](runtimes/gemma4-vllm-v0.24.0/servingruntime.yaml) file contains a working ServingRuntime for serving Gemma 4 12B FP8-Dynamic on a single NVIDIA L4 GPU.
 
 **Why a custom runtime is needed**: Gemma 4 uses the `Gemma4ForConditionalGeneration` architecture, which requires vLLM 0.23.0 or later. RHOAI 3.4 bundles an older vLLM version that does not support this architecture.
 
