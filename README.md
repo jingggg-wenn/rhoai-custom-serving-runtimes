@@ -83,7 +83,9 @@ Before creating a custom runtime, determine which vLLM version supports your tar
 
 ### 1. HuggingFace Model Card (RedHatAI Repository)
 
-The [Red Hat AI organization on HuggingFace](https://huggingface.co/RedHatAI) hosts 700+ optimized models ready for deployment on OpenShift AI. This is the first place to check when planning a model deployment:
+The [Red Hat AI organization on HuggingFace](https://huggingface.co/RedHatAI) hosts 700+ optimized models ready for deployment on OpenShift AI. This is the first place to check when planning a model deployment.
+
+![Red Hat AI HuggingFace repository with collections of validated models](images/redhatai-hf-repo.png)
 
 - **Quantized variants** -- Red Hat AI publishes FP8-Dynamic, INT8, INT4, and NVFP4 quantizations of popular models (Llama, Qwen, Gemma, DeepSeek, GLM, Kimi, and others). These optimized weights reduce GPU memory requirements by 50-75% while maintaining accuracy, enabling models to run on fewer or smaller GPUs than the original BF16 weights require.
 - **Accuracy benchmarks** -- Each model card includes evaluation results from Language Model Evaluation Harness, showing the accuracy recovery percentage compared to the original model (typically 98-105%).
@@ -246,9 +248,14 @@ To make the runtime available globally across all projects, ensure the YAML incl
 
 1. Log in to the OpenShift AI dashboard with an administrator account
 2. Navigate to **Settings > Model resources and operations > Serving runtimes**
+
+![OpenShift AI Serving runtimes settings page showing preinstalled and custom runtimes](images/servingruntimes-ui-page.png)
+
 3. You have two choices:
-  - **Duplicate an existing runtime** -- click the kebab menu on an existing runtime (e.g. "vLLM NVIDIA GPU ServingRuntime for KServe") and select **Duplicate**. Then edit the duplicated YAML to change the image, command, and env vars.
-  - **Add from scratch** -- click **Add serving runtime**, select **Start from scratch**, and paste the full ServingRuntime YAML.
+   - **Duplicate an existing runtime** -- click the kebab menu on an existing runtime (e.g. "vLLM NVIDIA GPU ServingRuntime for KServe") and select **Duplicate**. Then edit the duplicated YAML to change the image, command, and env vars.
+   - **Add from scratch** -- click **Add serving runtime**, select **Start from scratch**, and paste the full ServingRuntime YAML.
+
+![Serving runtimes page showing Add serving runtime button and Duplicate option](images/create-new-servingruntimes-ui.png)
 4. Save the runtime. It will appear in the list and be available when deploying models in any project.
 
 
