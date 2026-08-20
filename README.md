@@ -262,7 +262,15 @@ To make the runtime available globally across all projects, ensure the YAML incl
 
 ### Step 4: Deploy a Model Using the Custom Runtime
 
-Create an `InferenceService` that references the custom runtime by name:
+Once the custom runtime is added, it will appear in the **model deployment form** under the serving runtime dropdown. Select it when deploying a new model from the OpenShift AI dashboard.
+
+![Model deployment form showing the custom upstream v0.24.0 runtime in the dropdown](images/model-deployment-ui-form.png)
+
+From here, fill in the model name, select the custom runtime, choose a hardware profile, and deploy as usual.
+
+**Alternative: Deploy via YAML**
+
+If you prefer the CLI approach, create an `InferenceService` that references the custom runtime by name:
 
 ```yaml
 apiVersion: serving.kserve.io/v1beta1
@@ -282,7 +290,7 @@ spec:
     model:
       modelFormat:
         name: vLLM
-      runtime: upstream-vllm-0240-runtime   # <-- must match ServingRuntime metadata.name
+      runtime: upstream-vllm-0240-runtime   # must match ServingRuntime metadata.name
       storageUri: "oci://registry.redhat.io/rhai/modelcar-gemma-4-12b-it-fp8-dynamic:3.0"
       resources:
         limits:
@@ -294,8 +302,6 @@ spec:
         operator: "Exists"
         effect: "NoSchedule"
 ```
-
-Apply with:
 
 ```bash
 oc apply -f inferenceservice.yaml -n <your-namespace>
