@@ -98,14 +98,18 @@ Navigate to a model page on [huggingface.co/RedHatAI](https://huggingface.co/Red
 - **"Validated on RHOAI"** -- the RHOAI release it was tested against
 - **"ModelCar Storage URI"** -- the OCI image URI for direct deployment on OpenShift AI
 
-For example, the [RedHatAI/Qwen3-Coder-Next-NVFP4](https://huggingface.co/RedHatAI/Qwen3-Coder-Next-NVFP4) model card states:
+For example, the [RedHatAI/Qwen3.5-122B-A10B-FP8-dynamic](https://huggingface.co/RedHatAI/Qwen3.5-122B-A10B-FP8-dynamic) model card shows it was validated on vLLM v0.18.0, which falls within the RHOAI 3.4 bundled version -- meaning this model works with the default runtime and does not require a custom one.
 
+![HuggingFace model card for Qwen3.5-122B showing Validated on vLLM 0.18.0](images/hf-model-card.png)
 
-| Field                | Value                                                               |
-| -------------------- | ------------------------------------------------------------------- |
-| Validated on vLLM    | 0.14.1                                                              |
-| Validated on RHOAI   | 3.4 EA1                                                             |
-| ModelCar Storage URI | `oci://registry.redhat.io/rhai/modelcar-qwen3-coder-next-nvfp4:3.0` |
+As seen in the screenshot above, the [RedHatAI/Qwen3.5-122B-A10B-FP8-dynamic](https://huggingface.co/RedHatAI/Qwen3.5-122B-A10B-FP8-dynamic) model card states:
+
+| Field                | Value                                                                             |
+| -------------------- | --------------------------------------------------------------------------------- |
+| Model Architecture   | Qwen/Qwen3.5-122B-A10B                                                           |
+| Validated on vLLM    | 0.18.0                                                                            |
+| Validated on RHOAI   | 3.4                                                                               |
+| ModelCar Storage URI | `oci://registry.redhat.io/rhai/modelcar-qwen3-5-122b-a10b-fp8-dynamic:3.0`       |
 
 
 If the "Validated on vLLM" version is **newer** than what your RHOAI release bundles, you need a custom serving runtime.
