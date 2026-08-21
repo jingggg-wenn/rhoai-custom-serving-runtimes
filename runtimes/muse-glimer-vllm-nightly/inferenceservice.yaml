@@ -1,4 +1,5 @@
 # The following InferenceService is for the Muse-Glimer 30b model on OpenShift AI from live cluster.
+# Live config
 
 apiVersion: serving.kserve.io/v1beta1
 kind: InferenceService

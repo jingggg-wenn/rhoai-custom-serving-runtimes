@@ -1,0 +1,24 @@
+apiVersion: serving.kserve.io/v1alpha2
+kind: LLMInferenceServiceConfig
+metadata:
+  annotations:
+    openshift.io/description: nightly vLLM NVIDIA CUDA GPU LLMInferenceServiceConfig for LLMInferenceService.
+    openshift.io/display-name: nightly vLLM NVIDIA CUDA GPU LLMInferenceServiceConfig
+    serving.kserve.io/well-known-config: 'true'
+    internal.config.kubernetes.io/previousNamespaces: opendatahub
+    internal.config.kubernetes.io/previousKinds: LLMInferenceServiceConfig
+    platform.opendatahub.io/instance.generation: '2'
+    internal.config.kubernetes.io/previousNames: kserve-config-llm-template-nvidia-cuda
+    opendatahub.io/recommended-accelerators: '["nvidia.com/gpu"]'
+  name: v3-4-3-kserve-config-llm-template-nvidia-cuda-nightly
+  namespace: redhat-ods-applications
+  labels:
+    app.kubernetes.io/part-of: kserve
+    app.opendatahub.io/kserve: 'true'
+    opendatahub.io/config-type: accelerator
+    platform.opendatahub.io/part-of: kserve
+spec:
+  template:
+    containers:
+      - image: 'vllm/vllm-openai:nightly'
+        name: main
