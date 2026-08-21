@@ -16,6 +16,8 @@ Chat completions working against the deployed model:
 
 **OpenShift AI 3.4.3**
 
+![Deployment resource after appied llminferenceserviceconfig.yaml](../../images/img-nightly-vllm-llminferenceserviceconfig.png)
+
 Testing the model deployed via `LLMInferenceService` through the Models-as-a-Service (MaaS) gateway playground:
 
 ![Testing Muse Glimmer in the MaaS playground](../../images/img-muse-glimmer-maas-playground.png)

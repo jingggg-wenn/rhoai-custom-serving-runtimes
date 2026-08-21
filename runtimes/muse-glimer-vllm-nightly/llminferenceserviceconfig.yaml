@@ -1,4 +1,4 @@
-# Duplicate from one of the existing configs and change the name to muse-glimmer-llmisvc-nightly + vllm image
+# Duplicate from one of the existing configs and change the name to ....+nightly + vllm image
 apiVersion: serving.kserve.io/v1alpha2
 kind: LLMInferenceServiceConfig
 metadata:
