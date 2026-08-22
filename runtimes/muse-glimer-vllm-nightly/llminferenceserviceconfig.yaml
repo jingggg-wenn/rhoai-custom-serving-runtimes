@@ -1,4 +1,5 @@
 # Duplicate from one of the existing configs and change the name to ....+nightly + vllm image
+# see the existing LLMInferenceServiceConfig with `oc get LLMInferenceServiceConfig -A`
 apiVersion: serving.kserve.io/v1alpha2
 kind: LLMInferenceServiceConfig
 metadata:
