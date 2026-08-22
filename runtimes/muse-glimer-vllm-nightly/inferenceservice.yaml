@@ -1,0 +1,56 @@
+# The following InferenceService is for the Muse-Glimer 30b model on OpenShift AI from live cluster.
+# Live config
+
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  annotations:
+    modelFormat: vLLM
+    opendatahub.io/connections: secret-lmshfy
+    opendatahub.io/hardware-profile-name: gpu
+    opendatahub.io/hardware-profile-namespace: redhat-ods-applications
+    opendatahub.io/hardware-profile-resource-version: "1473389"
+    opendatahub.io/model-type: generative
+    openshift.io/description: ""
+    openshift.io/display-name: muse-glimmer-nightly
+    security.opendatahub.io/enable-auth: "false"
+    serving.kserve.io/deploymentMode: Standard
+  creationTimestamp: "2026-08-20T18:45:23Z"
+  finalizers:
+  - odh.inferenceservice.finalizers
+  - inferenceservice.finalizers
+  generation: 2
+  labels:
+    networking.kserve.io/visibility: exposed
+    opendatahub.io/dashboard: "true"
+  name: muse-glimmer-nightly
+  namespace: swongpai-vllm
+  resourceVersion: "12639456"
+  uid: d8d4e1b4-3782-4fff-968a-d973ee1cb764
+spec:
+  predictor:
+    automountServiceAccountToken: false
+    deploymentStrategy:
+      type: Recreate
+    maxReplicas: 1
+    minReplicas: 1
+    model:
+      args:
+      - --tool-call-parser=muse_glimmer
+      - --reasoning-parser=muse_glimmer
+      - --generation-config=auto
+      modelFormat:
+        name: vLLM
+      name: ""
+      resources:
+        limits:
+          cpu: "4"
+          memory: 8Gi
+          nvidia.com/gpu: "1"
+        requests:
+          cpu: "2"
+          memory: 4Gi
+          nvidia.com/gpu: "1"
+      runtime: muse-glimmer-nightly
+      storageUri: pvc://muse-30b-nvfp4/Muse-Glimmer-30B-NVFP4
+    timeout: 30
