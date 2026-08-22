@@ -1,4 +1,4 @@
-# This is the LLMInferenceServiceConfig for the Muse-Glimmer-30B-NVFP4 model 
+# This is the LLMInferenceService for the Muse-Glimmer-30B-NVFP4 model 
 # Live config
 
 apiVersion: serving.kserve.io/v1alpha2
