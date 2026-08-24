@@ -1,7 +1,7 @@
 # Custom Serving Runtimes for Red Hat OpenShift AI
 
 Created: 2026-08-20
-Last Modified: 2026-08-20
+Last Modified: 2026-08-25
 
 A collection of custom vLLM ServingRuntime configurations for serving the latest model architectures on Red Hat OpenShift AI (RHOAI).
 
@@ -13,8 +13,9 @@ A collection of custom vLLM ServingRuntime configurations for serving the latest
 2. [How to Find the Required vLLM Version](#how-to-find-the-required-vllm-version)
 3. [How to Create a Custom ServingRuntime](#how-to-create-a-custom-servingruntime)
 4. [Working Example: Gemma 4 12B FP8-Dynamic](#working-example-gemma-4-12b-fp8-dynamic)
-5. [Available Runtimes](#available-runtimes)
-6. [Troubleshooting](#troubleshooting)
+5. [Working Example: Muse Glimmer 30B NVFP4 (Nightly)](#working-example-muse-glimmer-30b-nvfp4-nightly)
+6. [Available Runtimes](#available-runtimes)
+7. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -327,6 +328,47 @@ The [runtimes/gemma4-vllm-v0.24.0/servingruntime.yaml](runtimes/gemma4-vllm-v0.2
 - **Command**: `vllm serve` instead of `python -m vllm.entrypoints.openai.api_server`
 - **Env vars**: `HOME=/tmp`, `USER=vllm`, `LOGNAME=vllm` for OpenShift UID compatibility
 - **Args**: `--max-model-len 4096` and `--gpu-memory-utilization 0.95` tuned for a 24GB L4
+
+---
+
+
+
+## Working Example: Muse Glimmer 30B NVFP4 (Nightly)
+
+The [runtimes/muse-glimer-vllm-nightly/](runtimes/muse-glimer-vllm-nightly/) directory contains a complete set of resources for serving [Muse Glimmer 30B NVFP4](https://huggingface.co/RedHatAI/Muse-Glimmer-30B-NVFP4) on OpenShift AI using a **vLLM nightly image**.
+
+**Why a nightly image is needed**: Muse Glimmer uses the `muse_glimmer` tool-call and reasoning parser, which is only available in vLLM nightly builds as of August 2026. No stable vLLM release includes this parser yet, so a nightly image is the only option.
+
+**What this example includes**:
+
+This example goes beyond a single ServingRuntime and demonstrates two deployment approaches, each with its own set of resources:
+
+| File | Purpose |
+| ---- | ------- |
+| [`servingruntime.yaml`](runtimes/muse-glimer-vllm-nightly/servingruntime.yaml) | Custom `ServingRuntime` that defines the vLLM nightly container, entrypoint command, environment variables, and GPU tuning parameters. Used by the traditional `InferenceService` deployment approach. |
+| [`inferenceservice.yaml`](runtimes/muse-glimer-vllm-nightly/inferenceservice.yaml) | Standard KServe `InferenceService` that references the custom `ServingRuntime` above. Deploys the model with `--tool-call-parser=muse_glimmer` and `--reasoning-parser=muse_glimmer` flags for tool-calling and chain-of-thought support. This is the traditional single-model deployment path. |
+| [`llminferenceserviceconfig.yaml`](runtimes/muse-glimer-vllm-nightly/llminferenceserviceconfig.yaml) | `LLMInferenceServiceConfig` that registers the vLLM nightly image as an available serving configuration for the newer `LLMInferenceService` API. Contains both the cluster-scoped template (applied to `redhat-ods-applications`) and the auto-generated namespace-scoped config. |
+| [`llmisvc.yaml`](runtimes/muse-glimer-vllm-nightly/llmisvc.yaml) | `LLMInferenceService` resource that deploys the model through the Models-as-a-Service (MaaS) gateway. This newer API provides built-in routing, gateway integration, and a simplified spec compared to the traditional `InferenceService` path. |
+
+**What was customized**:
+
+- **Image**: `vllm/vllm-openai:nightly` (upstream nightly, CUDA 13 compatible)
+- **Command**: `vllm serve` instead of `python -m vllm.entrypoints.openai.api_server`
+- **Env vars**: `HOME=/tmp`, `USER=vllm`, `LOGNAME=vllm` for OpenShift UID compatibility
+- **Model-specific args**: `--tool-call-parser=muse_glimmer --reasoning-parser=muse_glimmer --generation-config=auto --enable-auto-tool-choice`
+- **Args**: `--max-model-len 4096` and `--gpu-memory-utilization 0.90` tuned for a 24GB L4
+
+---
+
+
+
+## Available Runtimes
+
+
+| Directory | Model | vLLM Image | GPU Tested | Notes |
+| --------- | ----- | ---------- | ---------- | ----- |
+| [gemma4-vllm-v0.24.0](runtimes/gemma4-vllm-v0.24.0/) | Gemma 4 12B FP8-Dynamic | `vllm/vllm-openai:v0.24.0` | NVIDIA L4 (24 GB) | Stable release, uses `InferenceService` |
+| [muse-glimer-vllm-nightly](runtimes/muse-glimer-vllm-nightly/) | Muse Glimmer 30B NVFP4 | `vllm/vllm-openai:nightly` | NVIDIA L4 (24 GB) | Nightly build required; includes both `InferenceService` and `LLMInferenceService` examples |
 
 ---
 
