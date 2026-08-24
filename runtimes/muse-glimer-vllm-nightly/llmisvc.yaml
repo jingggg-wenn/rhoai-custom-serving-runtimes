@@ -1,0 +1,53 @@
+# This is the LLMInferenceService for the Muse-Glimmer-30B-NVFP4 model 
+# Live config
+
+apiVersion: serving.kserve.io/v1alpha2
+kind: LLMInferenceService
+metadata:
+  annotations:
+    opendatahub.io/connections: secret-vg2wuk
+    opendatahub.io/hardware-profile-name: gpu
+    opendatahub.io/hardware-profile-namespace: redhat-ods-applications
+    opendatahub.io/hardware-profile-resource-version: "1473389"
+    opendatahub.io/model-type: generative
+    openshift.io/display-name: muse-glimmer-llmisvc-nightly
+    serving.kserve.io/stop: "false"
+  creationTimestamp: "2026-08-21T02:58:01Z"
+  finalizers:
+  - serving.kserve.io/llmisvc-finalizer
+  generation: 2
+  labels:
+    opendatahub.io/dashboard: "true"
+    opendatahub.io/genai-asset: "true"
+  name: muse-glimmer-llmisvc-nightly
+  namespace: swongpai-vllm
+  resourceVersion: "13145805"
+  uid: 8ab0c791-c44c-4786-8a76-131ce2b8aa8e
+spec:
+  baseRefs:
+  - name: muse-glimmer-llmisvc-nightly
+  model:
+    uri: pvc://muse-30b-nvfp4/Muse-Glimmer-30B-NVFP4
+  replicas: 1
+  router:
+    gateway:
+      refs:
+      - name: maas-default-gateway
+        namespace: openshift-ingress
+    route: {}
+  template:
+    containers:
+    - env:
+      - name: VLLM_ADDITIONAL_ARGS
+        value: --tool-call-parser=muse_glimmer --reasoning-parser=muse_glimmer --generation-config=auto
+          --enable-auto-tool-choice
+      name: main
+      resources:
+        limits:
+          cpu: "4"
+          memory: 8Gi
+          nvidia.com/gpu: "1"
+        requests:
+          cpu: "2"
+          memory: 4Gi
+          nvidia.com/gpu: "1"
