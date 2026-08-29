@@ -25,7 +25,7 @@ This example demonstrates two deployment approaches for the same model, each wit
 
 - **`llminferenceserviceconfig.yaml`** -- A `LLMInferenceServiceConfig` resource that registers the vLLM nightly image as an available "serving configuration" for the newer `LLMInferenceService` API. Think of it as the MaaS equivalent of a `ServingRuntime` -- it tells the platform which container image to use when deploying models through the MaaS gateway. The file contains two documents: a cluster-scoped template (applied to `redhat-ods-applications`) and the auto-generated namespace-scoped config.
 
-- **`llmisvc.yaml`** -- The `LLMInferenceService` resource that deploys the model through the Models-as-a-Service (MaaS) gateway. Compared to the traditional `InferenceService`, it has a simpler spec and provides built-in routing via a gateway reference (`maas-default-gateway`). The model-specific vLLM args are passed through the `VLLM_ADDITIONAL_ARGS` environment variable instead of the `args` field.
+- **`llminferenceservice.yaml`** -- The `LLMInferenceService` resource that deploys the model through the Models-as-a-Service (MaaS) gateway. Compared to the traditional `InferenceService`, it has a simpler spec and provides built-in routing via a gateway reference (`maas-default-gateway`). The model-specific vLLM args are passed through the `VLLM_ADDITIONAL_ARGS` environment variable instead of the `args` field.
 
 ## Testing - ServingRuntime + InferenceService
 
@@ -49,3 +49,21 @@ Testing tool-calling with OpenCode against the MaaS-exposed endpoint:
 
 ![Testing Muse Glimmer with OpenCode](../../images/img-muse-glimmer-maas-opencode.png)
 
+**OpenShift AI 3.5.0 update**
+
+Add annotation for unlimited support runtime.
+
+![Add annotation to servingruntime](../../images/glimmer-servingruntime-3-5-0-0.png)
+
+![Servingruntime lists](../../images/glimmer-servingruntime-3-5-0-1.png)
+
+![Servingruntime limited support](../../images/glimmer-servingruntime-3-5-0-2.png)
+
+![Deploy with Servingruntime](../../images/glimmer-servingruntime-3-5-0-3.png)
+
+Similar for LLMinferenceserviceconfig
+
+
+![Add annotation to llminferenceserviceconfig](../../images/glimmer-llminferenceserviceconfig-3-5-0-0.png)
+
+![Deploy with LLMinferenceservice](../../images/glimmer-llminferenceserviceconfig-3-5-0-1.png)
