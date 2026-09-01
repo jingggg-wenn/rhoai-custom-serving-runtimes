@@ -1,7 +1,7 @@
 # Custom Serving Runtimes for Red Hat OpenShift AI
 
 Created: 2026-08-20
-Last Modified: 2026-08-25
+Last Modified: 2026-09-01
 
 A collection of custom vLLM ServingRuntime configurations for serving the latest model architectures on Red Hat OpenShift AI (RHOAI).
 
