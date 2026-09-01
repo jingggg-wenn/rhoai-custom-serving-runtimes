@@ -346,9 +346,9 @@ This example goes beyond a single ServingRuntime and demonstrates two deployment
 | File | Purpose |
 | ---- | ------- |
 | [`servingruntime.yaml`](runtimes/muse-glimer-vllm-nightly/servingruntime.yaml) | Custom `ServingRuntime` that defines the vLLM nightly container, entrypoint command, environment variables, and GPU tuning parameters. Used by the traditional `InferenceService` deployment approach. |
-| [`inferenceservice.yaml`](runtimes/muse-glimer-vllm-nightly/inferenceservice.yaml) | Standard KServe `InferenceService` that references the custom `ServingRuntime` above. Deploys the model with `--tool-call-parser=muse_glimmer` and `--reasoning-parser=muse_glimmer` flags for tool-calling and chain-of-thought support. This is the traditional single-model deployment path. |
+| [`inferenceservice.yaml`](runtimes/muse-glimer-vllm-nightly/live-config/inferenceservice.yaml) | Standard KServe `InferenceService` that references the custom `ServingRuntime` above. Deploys the model with `--tool-call-parser=muse_glimmer` and `--reasoning-parser=muse_glimmer` flags for tool-calling and chain-of-thought support. This is the traditional single-model deployment path. |
 | [`llminferenceserviceconfig.yaml`](runtimes/muse-glimer-vllm-nightly/llminferenceserviceconfig.yaml) | `LLMInferenceServiceConfig` that registers the vLLM nightly image as an available serving configuration for the newer `LLMInferenceService` API. Contains both the cluster-scoped template (applied to `redhat-ods-applications`) and the auto-generated namespace-scoped config. |
-| [`llmisvc.yaml`](runtimes/muse-glimer-vllm-nightly/llmisvc.yaml) | `LLMInferenceService` resource that deploys the model through the Models-as-a-Service (MaaS) gateway. This newer API provides built-in routing, gateway integration, and a simplified spec compared to the traditional `InferenceService` path. |
+| [`llminferenceserivce.yaml`](runtimes/muse-glimer-vllm-nightly/live-config/llminferenceservice.yaml) | `LLMInferenceService` resource that deploys the model through the Models-as-a-Service (MaaS) gateway. This newer API provides built-in routing, gateway integration, and a simplified spec compared to the traditional `InferenceService` path. |
 
 **What was customized**:
 
@@ -368,7 +368,7 @@ This example goes beyond a single ServingRuntime and demonstrates two deployment
 | Directory | Model | vLLM Image | GPU Tested | Notes |
 | --------- | ----- | ---------- | ---------- | ----- |
 | [gemma4-vllm-v0.24.0](runtimes/gemma4-vllm-v0.24.0/) | Gemma 4 12B FP8-Dynamic | `vllm/vllm-openai:v0.24.0` | NVIDIA L4 (24 GB) | Stable release, uses `InferenceService` |
-| [muse-glimer-vllm-nightly](runtimes/muse-glimer-vllm-nightly/) | Muse Glimmer 30B NVFP4 | `vllm/vllm-openai:nightly` | NVIDIA L4 (24 GB) | Nightly build required; includes both `InferenceService` and `LLMInferenceService` examples |
+| [muse-glimer-vllm-nightly](runtimes/muse-glimer-vllm-nightly/) | Muse Glimmer 30B NVFP4 | `vllm/vllm-openai:nightly` | NVIDIA H100 (80 GB) | Nightly build required; includes both `InferenceService` and `LLMInferenceService` examples |
 
 ---
 
