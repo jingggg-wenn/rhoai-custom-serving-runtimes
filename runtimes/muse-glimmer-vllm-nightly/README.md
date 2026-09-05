@@ -67,3 +67,14 @@ Similar for LLMinferenceserviceconfig
 ![Add annotation to llminferenceserviceconfig](../../images/glimmer-llminferenceserviceconfig-3-5-0-0.png)
 
 ![Deploy with LLMinferenceservice](../../images/glimmer-llminferenceserviceconfig-3-5-0-1.png)
+
+[TP in 3.5] If `llmdTemplates: true` is set in `odhDashboardConfig`, the deployment wizard switches to topology-based `LLMInferenceServiceConfig` templates (e.g. single-node, multi-node/disaggregated) instead of the flat accelerator-based list shown above. To deploy Muse Glimmer with the nightly vLLM image under this mode, apply [`llminferenceserviceconfig-llmdtemplates-sno.yaml`](llminferenceserviceconfig-llmdtemplates-sno.yaml), which defines a `single-node-nightly` config pointing at `vllm/vllm-openai:nightly` and labeled `opendatahub.io/config-type: workload-single-node` so the wizard's topology filter picks it up.
+
+![llmd topology configured SNO](../../images/glimmer-llmd-topology-sno.png)
+
+![Wizard UI for deploy model with llmd topology SNO](../../images/glimmer-llmd-inferenceserviceconfig-llmdtemplate-35-tp.png)
+
+
+![llmd-pods](../../images/glimmer-llmd-pods.png) 
+
+![llmd-nightly](../../images/glimmer-llmd-nightly.png)
