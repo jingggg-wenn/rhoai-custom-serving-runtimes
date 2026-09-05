@@ -1,0 +1,31 @@
+apiVersion: serving.kserve.io/v1alpha2
+kind: LLMInferenceServiceConfig
+metadata:
+  annotations:
+    description: Standard single-node GPU deployment with intelligent scheduling.
+      Suitable for models that fit in a single GPU.
+    openshift.io/description: nightly vLLM NVIDIA CUDA GPU LLMInferenceServiceConfig for LLMInferenceService.
+    openshift.io/display-name: single-node-nightly
+  labels:
+    # This label classifies the config for the UI deployment wizard.
+    # The UI filters available configs by this label value.
+    opendatahub.io/config-type: workload-single-node
+    opendatahub.io/dashboard: "true"
+  name: single-node-nightly
+  namespace: redhat-ods-applications
+spec:
+  model:
+    uri: ""
+  template:
+    containers:
+    - image: vllm/vllm-openai:nightly
+      name: main
+      resources:
+        limits:
+          cpu: "4"
+          memory: 32Gi
+          nvidia.com/gpu: "1"
+        requests:
+          cpu: "2"
+          memory: 16Gi
+          nvidia.com/gpu: "1"
